@@ -10,18 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8be243a7275131e49aec142028105dfd, type: 3}
-  m_Name: Rifle
+  m_Name: Glock
   m_EditorClassIdentifier: 
-  _GunName: Assault rifle
+  _GunName: Glock
   _CurrentAmmo: 0
-  _MaxAmmo: 30
-  _Damage: 5
-  _ReloadTime: 3
-  _FireRate: 5
+  _MaxAmmo: 0
+  _Damage: 0
+  _ReloadTime: 0
+  _FireRate: 0
   _LastShot: 0
   _NextFireTime: 0
-  _SpawnGun: {fileID: 532913073027713679, guid: a3a0c9a6ecad856438cda38c795e61ae, type: 3}
-  gunPosition: {x: 0.34, y: -0.26, z: 0.26}
-  firePointPos: {x: 0, y: 0, z: 3.67}
-  gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
-  FirePointOffset: {x: 0, y: 0, z: 0}
+  _SpawnGun: {fileID: 8804982591166008370, guid: 855c20ed6523c4a4b933ea7a5465d471, type: 3}
+  gunPosition: {x: 0, y: 0, z: 0}
+  gunRotation: {x: 0, y: 0, z: 0, w: 0}

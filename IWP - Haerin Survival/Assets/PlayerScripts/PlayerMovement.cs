@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Gamemanager._instance._iswalking += Testing;
+        //Gamemanager._instance._iswalking += Testing;
     }
 
     void Update()
@@ -35,10 +35,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
         // Get the camera's forward and right direction
         Vector3 forward = _PlayerCamera.transform.forward;
         Vector3 right = _PlayerCamera.transform.right;
-
+ 
         // Flatten the vectors to ignore the y-component
         forward.y = 0f;
         right.y = 0f;
@@ -68,7 +72,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Move the character controller
-        _CharacterController.Move(moveDirection * currentSpeed * Time.deltaTime);
+        Vector3 move = transform.right * x + transform.forward * z;
+        _CharacterController.Move(move * currentSpeed * Time.deltaTime);
+        //_CharacterController.Move(moveDirection * currentSpeed * Time.deltaTime);
         _CharacterController.Move(_Velocity * Time.deltaTime);
     }
 

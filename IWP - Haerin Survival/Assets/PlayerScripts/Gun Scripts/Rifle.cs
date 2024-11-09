@@ -1,74 +1,110 @@
 using UnityEngine;
+using System;
+using System.Collections;
+using TMPro;
 
 public class Rifle : MonoBehaviour
 {
     [Header("Gun References")]
     [SerializeField] private BaseGunScript _Rifle;
-    [SerializeField] private Camera _camera; // Ensure this is assigned in the Inspector
 
     [Header("Gun Variables")]
     public string GunName;
     public int CurrentAmmo;
     public int MaxAmmo;
     public int Damage;
-    public int ReloadTime;
-    public float FireRate;
-
-    public GameObject GunModel;
+    public float LastShot;
+    public float NextFireTime;
+    public float ReloadTime = 2f;
     public GameObject FirePoint;
+    [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
+
+    [Header("Gun UI")]
+    private TextMeshProUGUI ammoText;
+
+
 
     void Start()
     {
-        GunName = _Rifle._GunName;
+        if (ammoText == null)
+        {
+            ammoText = GameObject.Find("AmmoText").GetComponent<TextMeshProUGUI>();  // "AmmoText" is the name of the UI Text object
+        }
+
+        if (firePointPrefab != null)
+        {
+            // Instantiate the FirePoint prefab and assign it to FirePoint
+            FirePoint = Instantiate(firePointPrefab, transform);  // This makes FirePoint a child of the gun
+            FirePoint.transform.localPosition = _Rifle.firePointPos; // Position it at (0, 0, 3.67) relative to the gun's origin
+
+        }
+
         CurrentAmmo = _Rifle._CurrentAmmo;
         MaxAmmo = _Rifle._MaxAmmo;
-        Damage = _Rifle._Damage;
-        ReloadTime = _Rifle._ReloadTime;
-        FireRate = _Rifle._FireRate;
-        //GunModel = _Rifle._GunModel;
-
         CurrentAmmo = MaxAmmo;
+        GunName = _Rifle._GunName;
+        Damage = _Rifle._Damage;
+        LastShot = _Rifle._LastShot;
+        NextFireTime = _Rifle._NextFireTime;
+
+        LastShot = NextFireTime;
+        
         Gamemanager._instance._iswalking += Shoot;
+        //GetFirePoint(); 
+        UpdateAmmoUI();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        RotateGun(); // Call to rotate the gun
-
-        if (Input.GetMouseButton(0))
+        
+        if (Input.GetMouseButtonDown(0) && LastShot <= 0f && CurrentAmmo > 0)
         {
+            CurrentAmmo -= 1;
             Gamemanager._instance.IsPlayerWalking();
+            Debug.Log(CurrentAmmo);
+            ammoText.text = CurrentAmmo.ToString();
+            LastShot = NextFireTime;
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(Reload());
+          
+        }
+
+        LastShot -= Time.deltaTime;
+        UpdateAmmoUI();
     }
-
-    private void RotateGun()
-    {
-        // Get the camera's rotation
-        Quaternion cameraRotation = _camera.transform.rotation;
-
-        // Create a new rotation using the camera's X and Y values, with Z fixed at 90 degrees
-        Quaternion gunRotation = Quaternion.Euler(cameraRotation.eulerAngles.x, cameraRotation.eulerAngles.y, 90f);
-
-        // Set the gun's rotation
-        GunModel.transform.rotation = gunRotation;
-    }
-
 
     private void Shoot()
     {
-        // Create a ray from the fire point
-        Ray ray = new Ray(FirePoint.transform.position, FirePoint.transform.forward);
-        RaycastHit hit;
-
-        // Visualize the ray in the Scene view
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f); // Length of the ray is 100 units
-
-        // Perform the raycast
-        if (Physics.Raycast(ray, out hit))
+        if (FirePoint != null)
         {
-            Debug.Log("Hit: " + hit.collider.name);
-            // Handle hit (e.g., apply damage)
+            Ray ray = new Ray(FirePoint.transform.position, FirePoint.transform.forward);
+            RaycastHit hit;
+            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f); // Length of the ray is 100 units
+            // Perform the raycast
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log("Hit: " + hit.collider.name);
+            }
         }
     }
+
+    private IEnumerator Reload()
+    {
+        Debug.Log("Reloading...");
+        // Optionally play a reload animation here
+
+        yield return new WaitForSeconds(ReloadTime); // Wait for the reload duration
+
+        CurrentAmmo = MaxAmmo; // Reset ammo after reloading
+        Debug.Log("Reload complete!");
+        // Optionally stop the reload animation here
+    }
+
+    private void UpdateAmmoUI()
+    {
+        ammoText.text = "Ammo: " + CurrentAmmo + "/" + MaxAmmo;
+    }
+
 }
