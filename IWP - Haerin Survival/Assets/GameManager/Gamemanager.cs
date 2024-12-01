@@ -4,66 +4,66 @@ using System;
 public class Gamemanager : MonoBehaviour
 {
     [Header("Gun References")]
-    [SerializeField] private BaseGunScript gunModel;
+    [SerializeField] private BaseGunScript gunModel; // The gun model for the starting gun
     [SerializeField] private Transform headTransform;
     [SerializeField] private Camera _camera;
     [SerializeField] private GameObject Head;
     private GameObject spawnedGun;
+    //private Inventorys inventory;
 
     [Header("Event System")]
     public static Gamemanager _instance;
 
     private void Awake()
     {
-        SpawnGun();
         _instance = this;
-       
+    }
+
+    public void EquipWeapon(BaseGunScript gunModel)
+    {
+        //inventory.EquipWeapon(gunModel); // Equip the selected weapon
     }
 
     public event Action _iswalking;
-    //public event Action _isReloding;
-    private void Update()
-    {
-        RotateGun();
-    }
+
+    // Event for walking
     public void IsPlayerWalking()
     {
-        // Invoke the event if there are any subscribers
         _iswalking?.Invoke();
     }
 
+    // Spawn the starting gun and add it to the inventory
     public void SpawnGun()
     {
+        // Spawn the gun and position it
         spawnedGun = Instantiate(gunModel._SpawnGun);
         spawnedGun.transform.SetParent(headTransform);
         spawnedGun.transform.localPosition = gunModel.gunPosition;
         spawnedGun.transform.localRotation = gunModel.gunRotation;
+
+        // Add the spawned gun to the inventory
+        //inventory.AddWeaponToInventory(gunModel); // Add the gun to the inventory
+        Debug.Log("Starting gun added to inventory: " + gunModel._GunName);
     }
 
+    // Add weapon to inventory
+    public void AddWeaponToInventory(BaseGunScript newGun)
+    {
+        //inventory.AddWeaponToInventory(newGun); // Add weapon to inventory
+    }
+
+    // Spawn additional guns (can be used in the shop, for example)
     public void SpawnGuns(BaseGunScript _gunModel, Transform _headTrans)
     {
         if (_gunModel._SpawnGun == null)
         {
             Debug.LogError("Gun prefab not assigned in BaseGunScript!");
-            return; 
+            return;
         }
 
         GameObject _gun = Instantiate(_gunModel._SpawnGun);
         _gun.transform.SetParent(_headTrans);
         _gun.transform.localPosition = _gunModel.gunPosition;
         _gun.transform.localRotation = _gunModel.gunRotation;
-    }
-
-
-    private void RotateGun()
-    {
-        // Get the camera's rotation
-        Quaternion cameraRotation = _camera.transform.rotation;
-
-        // Create a new rotation using the camera's X and Y values, with Z fixed at 90 degrees
-        Quaternion gunRotation = Quaternion.Euler(cameraRotation.eulerAngles.x, cameraRotation.eulerAngles.y, cameraRotation.eulerAngles.z);
-
-        // Set the gun's rotation
-        Head.transform.rotation = gunRotation;
     }
 }

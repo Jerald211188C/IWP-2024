@@ -21,7 +21,7 @@ MonoBehaviour:
   _LastShot: 0
   _NextFireTime: 0
   _SpawnGun: {fileID: 532913073027713679, guid: a3a0c9a6ecad856438cda38c795e61ae, type: 3}
-  gunPosition: {x: 0.34, y: -0.26, z: 0.26}
-  firePointPos: {x: 0, y: 0, z: 3.67}
+  gunPosition: {x: 0.56, y: -0.32, z: 0.54}
+  firePointPos: {x: 0, y: 0, z: 1}
   gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   FirePointOffset: {x: 0, y: 0, z: 0}

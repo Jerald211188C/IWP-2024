@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be243a7275131e49aec142028105dfd, type: 3}
+  m_Name: RPG
+  m_EditorClassIdentifier: 
+  _GunName: Assault rifle
+  _CurrentAmmo: 0
+  _MaxAmmo: 30
+  _Damage: 5
+  _ReloadTime: 3
+  _FireRate: 5
+  _LastShot: 0
+  _NextFireTime: 0
+  _SpawnGun: {fileID: 8804982591166008370, guid: 855c20ed6523c4a4b933ea7a5465d471, type: 3}
+  gunPosition: {x: 0.56, y: -0.32, z: 0.54}
+  firePointPos: {x: 0, y: 0, z: 3.67}
+  gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  FirePointOffset: {x: 0, y: 0, z: 0}

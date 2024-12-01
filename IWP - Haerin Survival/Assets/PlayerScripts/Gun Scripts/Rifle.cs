@@ -7,7 +7,10 @@ public class Rifle : MonoBehaviour
 {
     [Header("Gun References")]
     [SerializeField] private BaseGunScript _Rifle;
-
+    [SerializeField] private GameObject _enemyObject; // Make sure to assign this in the Inspector
+    [SerializeField] private CameraRecoil _cameraRecoil;   
+    
+    private SimpleEnemy _Enemy;
     [Header("Gun Variables")]
     public string GunName;
     public int CurrentAmmo;
@@ -17,18 +20,26 @@ public class Rifle : MonoBehaviour
     public float NextFireTime;
     public float ReloadTime = 2f;
     public GameObject FirePoint;
+    public float bulletSpreadAmount = 1f;
     [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
+    public float currentRecoilXPos;
+    public float currentRecoilYPos;
+    [Range(0f, 7f)] public float recoilAmountY;
+    [Range(0f, 3f)] public float recoilAmountX;
+    [Range(0f, 10f)] public float maxRecoilTime = 4;
+    private float timepressed;
 
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
 
-
     void Start()
     {
+
+        //Enemy = _enemyObject.GetComponent<SimpleEnemy>();
         if (ammoText == null)
         {
-            ammoText = GameObject.Find("AmmoText").GetComponent<TextMeshProUGUI>();  // "AmmoText" is the name of the UI Text object
+            ammoText = GameObject.Find("AmmoText").GetComponent<TextMeshProUGUI>();
         }
 
         if (firePointPrefab != null)
@@ -60,8 +71,9 @@ public class Rifle : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && LastShot <= 0f && CurrentAmmo > 0)
         {
             CurrentAmmo -= 1;
-            Gamemanager._instance.IsPlayerWalking();
-            Debug.Log(CurrentAmmo);
+            Shoot();
+            //Gamemanager._instance.IsPlayerWalking();
+            //Debug.Log(CurrentAmmo);
             ammoText.text = CurrentAmmo.ToString();
             LastShot = NextFireTime;
         }
@@ -77,25 +89,52 @@ public class Rifle : MonoBehaviour
 
     private void Shoot()
     {
+   
         if (FirePoint != null)
         {
             Ray ray = new Ray(FirePoint.transform.position, FirePoint.transform.forward);
             RaycastHit hit;
+
+            // Visualize the ray in the Scene view
             Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f); // Length of the ray is 100 units
             // Perform the raycast
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Debug.Log("Hit: " + hit.collider.name);
+                // Check if the hit object has the "Enemy" tag
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    Debug.Log("Hit an enemy: " + hit.collider.name);
+
+                    // Get the Health component from the hit enemy
+                    Health enemyHealth = hit.collider.GetComponent<Health>();
+
+                    if (enemyHealth != null)
+                    {
+                        // Apply damage to the enemy
+                        enemyHealth.Damage(10f); // 10 is the damage value (you can change this)
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Health component found on the enemy.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Hit: " + hit.collider.name);
+                }
             }
         }
+
+        _cameraRecoil.RecoilFire();
     }
+
 
     private IEnumerator Reload()
     {
         Debug.Log("Reloading...");
         // Optionally play a reload animation here
 
-        yield return new WaitForSeconds(ReloadTime); // Wait for the reload duration
+        yield return new WaitForSeconds(0.1f); // Wait for the reload duration
 
         CurrentAmmo = MaxAmmo; // Reset ammo after reloading
         Debug.Log("Reload complete!");

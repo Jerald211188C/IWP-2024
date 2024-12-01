@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5859467705260070018}
   - component: {fileID: 3591922370081187736}
   - component: {fileID: 4100816399324223250}
+  - component: {fileID: -6676073100289514860}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -100,6 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Rifle: {fileID: 11400000, guid: 09c59483a185e4d4390eb1e681d0e8f0, type: 2}
+  _enemyObject: {fileID: 0}
+  _camera: {fileID: 0}
   GunName: Rifle
   CurrentAmmo: 0
   MaxAmmo: 30
@@ -108,4 +111,31 @@ MonoBehaviour:
   NextFireTime: 10
   ReloadTime: 3
   FirePoint: {fileID: 4079031039005579886, guid: ee9dba8d85162ce46887635de490113c, type: 3}
+  bulletSpreadAmount: 1
   firePointPrefab: {fileID: 4079031039005579886, guid: ee9dba8d85162ce46887635de490113c, type: 3}
+  currentRecoilXPos: 0
+  currentRecoilYPos: 0
+  recoilAmountY: 0
+  recoilAmountX: 0
+  maxRecoilTime: 4
+--- !u!114 &-6676073100289514860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532913073027713679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0655b582d2f89a42a38f1f3a55f75d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Origin: {fileID: 0}
+  recoilX: 0
+  recoilY: 0
+  recoilZ: 0
+  aimrecoilX: 0
+  aimrecoilY: 0
+  aimrecoilZ: 0
+  snappiness: 0
+  returnspeed: 0

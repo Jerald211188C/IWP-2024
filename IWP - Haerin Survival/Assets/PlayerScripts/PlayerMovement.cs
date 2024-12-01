@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,12 +14,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _SprintMultiplier = 1.5f; // Sprint speed multiplier
     [SerializeField] private float _JumpForce;
     [SerializeField] private float _Gravity = -9.81f;
+    private Health health;
+    public Health Health => health;
+
+    
 
     private Vector3 _Velocity;
     private Vector3 _PlayerMovementInput;
     private Vector2 _PlayerMouseInput;
 
-    void Start()
+    private void Awake()
+    {
+        health = GetComponent<Health>();
+        health.Death.AddListener(Death);
+    }
+    void Start()    
     {
         Cursor.lockState = CursorLockMode.Locked;
         //Gamemanager._instance._iswalking += Testing;
@@ -96,5 +106,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Gamemanager._instance._iswalking -= Testing; // Unsubscribe from the event
         }
+    }
+
+    private void Death()
+    {
+        //DO other req stuff to kill player like pause game, do ani and return to main menu
+        Destroy(gameObject);
+        Debug.Log("Player has died.");
     }
 }
