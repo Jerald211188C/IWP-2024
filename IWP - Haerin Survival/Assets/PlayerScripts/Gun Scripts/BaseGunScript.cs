@@ -17,6 +17,7 @@ public class BaseGunScript : ScriptableObject
     public GameObject _SpawnGun;
     public Vector3 gunPosition = new Vector3();
     public Vector3 firePointPos = new Vector3();
+    public Quaternion firePointRotation = new Quaternion();
     public Quaternion gunRotation = new Quaternion();
     public Vector3 FirePointOffset; // Relative position offset for FirePoint
 

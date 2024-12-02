@@ -12,8 +12,8 @@ public class CameraRecoil : MonoBehaviour
     private bool isAiming;
 
     //Rotations
-    private Vector3 currentRotations;
-    private Vector3 targetRotations;
+    public Vector3 currentRotations;
+    public Vector3 targetRotations;
 
     //HipFire Recoil
     [SerializeField] private float recoilX;

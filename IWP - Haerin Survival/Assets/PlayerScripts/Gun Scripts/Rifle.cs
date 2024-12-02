@@ -19,16 +19,8 @@ public class Rifle : MonoBehaviour
     public float LastShot;
     public float NextFireTime;
     public float ReloadTime = 2f;
-    public GameObject FirePoint;
-    public float bulletSpreadAmount = 1f;
+    private GameObject FirePoint;
     [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
-    public float currentRecoilXPos;
-    public float currentRecoilYPos;
-    [Range(0f, 7f)] public float recoilAmountY;
-    [Range(0f, 3f)] public float recoilAmountX;
-    [Range(0f, 10f)] public float maxRecoilTime = 4;
-    private float timepressed;
-
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
@@ -47,6 +39,7 @@ public class Rifle : MonoBehaviour
             // Instantiate the FirePoint prefab and assign it to FirePoint
             FirePoint = Instantiate(firePointPrefab, transform);  // This makes FirePoint a child of the gun
             FirePoint.transform.localPosition = _Rifle.firePointPos; // Position it at (0, 0, 3.67) relative to the gun's origin
+            FirePoint.transform.localRotation = _Rifle.firePointRotation;
 
         }
 

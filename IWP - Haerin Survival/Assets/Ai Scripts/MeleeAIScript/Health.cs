@@ -6,7 +6,7 @@ using System.Collections;
 public class Health : MonoBehaviour
 {
     [SerializeField] private float _max; // Max Health
-    [SerializeField] private float _value; // Current Health
+    [SerializeField] public float _value; // Current Health
     [SerializeField] private Slider _Slider;
     [SerializeField] private Image redFlashImage; // Reference to the red flash Image
 

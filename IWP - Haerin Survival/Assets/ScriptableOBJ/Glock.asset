@@ -14,12 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _GunName: Glock
   _CurrentAmmo: 0
-  _MaxAmmo: 0
-  _Damage: 0
-  _ReloadTime: 0
-  _FireRate: 0
+  _MaxAmmo: 30
+  _Damage: 1
+  _ReloadTime: 3
+  _FireRate: 2
   _LastShot: 0
   _NextFireTime: 0
-  _SpawnGun: {fileID: 8804982591166008370, guid: 855c20ed6523c4a4b933ea7a5465d471, type: 3}
+  _SpawnGun: {fileID: 919132149155446097, guid: 02f6717f8c610d94d9ac430778138918, type: 3}
   gunPosition: {x: 0, y: 0, z: 0}
+  firePointPos: {x: 0, y: 0, z: 0}
+  firePointRotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
   gunRotation: {x: 0, y: 0, z: 0, w: 0}
+  FirePointOffset: {x: 0, y: 0, z: 0}
