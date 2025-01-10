@@ -7,6 +7,7 @@ public class SimpleEnemy : MonoBehaviour
     [SerializeField] private RangeDetect _range;
     [SerializeField] private GameObject _player;
     private RoundController _roundController; // Reference to the RoundController
+    private LevelUpSystem _levelUpSystem;
     private Health health;
     public Health Health => health;
     private NavMeshAgent _agent;
@@ -26,6 +27,12 @@ public class SimpleEnemy : MonoBehaviour
     {
         // Find the RoundController in the scene
         //_roundController = FindObjectOfType<RoundController>();
+        _levelUpSystem = FindFirstObjectByType<LevelUpSystem>();
+        if (_levelUpSystem == null)
+        {
+            Debug.LogError("RoundController not found in the scene. Make sure it exists.");
+        }
+
         _roundController = FindFirstObjectByType<RoundController>();
         if (_roundController == null)
         {
@@ -93,6 +100,10 @@ public class SimpleEnemy : MonoBehaviour
         _player = null; // Clear player reference
     }
 
+    public void SetLevelSystem(LevelUpSystem _levelUpSystem)
+    {
+        this._levelUpSystem = _levelUpSystem;
+    }
     private void Death()
     {
         if (_roundController != null)
@@ -100,6 +111,7 @@ public class SimpleEnemy : MonoBehaviour
             _roundController._EnemyCount--; // Decrement the enemy count in RoundController
         }
 
+        _levelUpSystem.AddExp(550);
         // Additional death logic
         Destroy(gameObject);
         Debug.Log("Enemy has died.");

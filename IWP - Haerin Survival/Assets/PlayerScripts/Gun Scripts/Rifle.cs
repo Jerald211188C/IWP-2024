@@ -8,7 +8,8 @@ public class Rifle : MonoBehaviour
     [Header("Gun References")]
     [SerializeField] private BaseGunScript _Rifle;
     [SerializeField] private GameObject _enemyObject; // Make sure to assign this in the Inspector
-    [SerializeField] private CameraRecoil _cameraRecoil;   
+    [SerializeField] private CameraRecoil _cameraRecoil;  
+    private SkillTree _skillTree;
     
     private SimpleEnemy _Enemy;
     [Header("Gun Variables")]
@@ -24,7 +25,10 @@ public class Rifle : MonoBehaviour
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
-
+    private void Awake()
+    {
+        _skillTree = new SkillTree();
+    }
     void Start()
     {
 
@@ -104,7 +108,7 @@ public class Rifle : MonoBehaviour
                     if (enemyHealth != null)
                     {
                         // Apply damage to the enemy
-                        enemyHealth.Damage(10f); // 10 is the damage value (you can change this)
+                        enemyHealth.Damage(Damage); // 10 is the damage value (you can change this)
                     }
                     else
                     {
@@ -113,7 +117,7 @@ public class Rifle : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Hit: " + hit.collider.name);
+                    //Debug.Log("Hit: " + hit.collider.name);
                 }
             }
         }
@@ -137,6 +141,22 @@ public class Rifle : MonoBehaviour
     private void UpdateAmmoUI()
     {
         ammoText.text = "Ammo: " + CurrentAmmo + "/" + MaxAmmo;
+    }
+
+    public bool DealMoreDamage()
+    {
+        return _skillTree.IsSkillUnlocked(SkillTree.SkillType.MoreDamage);
+    }
+
+    public SkillTree GetPlayerSkills()
+    {
+        return _skillTree;
+    }
+
+    public void IncreaseDamage(int amount)
+    {
+        Damage += amount;
+        Debug.Log("Damage increased by: " + amount + ". New Damage: " + Damage);
     }
 
 }
