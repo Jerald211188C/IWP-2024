@@ -67,7 +67,6 @@ public class LevelSystemAnimation : MonoBehaviour
                 isAnimating = false;
             }
         }
-        //Debug.Log(level + " " + exp);
     }
 
     private void AddExp()

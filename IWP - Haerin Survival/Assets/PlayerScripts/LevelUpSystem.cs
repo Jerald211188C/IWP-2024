@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using TMPro;
 
 public class LevelUpSystem : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class LevelUpSystem : MonoBehaviour
     [SerializeField] private int level;
     [SerializeField] private int exp;
     [SerializeField] private int expToNextLevel;
+
+
     public LevelUpSystem()
     {
         Instance = this;

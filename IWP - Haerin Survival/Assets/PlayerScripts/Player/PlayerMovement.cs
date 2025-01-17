@@ -1,8 +1,11 @@
 using UnityEngine;
-using UnityEngine.Events;
+using System;
+using System.Collections;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
+    
     [Header("Controller References")]
     [SerializeField] private CharacterController _CharacterController;
     [SerializeField] private Transform _PlayerCamera;
@@ -14,10 +17,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _SprintMultiplier = 1.5f; // Sprint speed multiplier
     [SerializeField] private float _JumpForce;
     [SerializeField] private float _Gravity = -9.81f;
+    [SerializeField] private PlayerStats _Stats;
+    [SerializeField] private GameObject _SkillTreeUI;
+
+    [Header("Stats UI")]
+    [SerializeField] private TextMeshProUGUI _CoinsTXT;
+    public int EXP;
+    public int _Coins;
+    public int _CoinToAdd;
     private Health health;
     public Health Health => health;
-
-    
+    private LevelUpSystem _levelUpSystem;
 
     private Vector3 _Velocity;
     private Vector3 _PlayerMovementInput;
@@ -25,6 +35,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        EXP = _Stats._EXP;
+        _Coins = _Stats._StartingCoins;
+        _CoinToAdd = _Stats._CoinsToAdd;
+        if (_SkillTreeUI != null)
+        {
+            // Temporarily enable the UI
+            _SkillTreeUI.SetActive(true);
+            // Disable the UI again
+            _SkillTreeUI.SetActive(false);
+        }
         health = GetComponent<Health>();
         health.Death.AddListener(Death);
     }
@@ -35,7 +55,9 @@ public class PlayerMovement : MonoBehaviour
         _PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
         MovePlayer();
-        RotatePlayer(); // Ensure the player rotates with the camera
+        RotatePlayer();
+        UpdateCoinsUI();
+        HandleSkillTreeToggle();
     }
 
     private void MovePlayer()
@@ -109,4 +131,53 @@ public class PlayerMovement : MonoBehaviour
         Destroy(gameObject);
         Debug.Log("Player has died.");
     }
+
+    private void ToggleSkillTree()
+    {
+        if (_SkillTreeUI != null)
+        {
+            bool isSkillTreeActive = !_SkillTreeUI.activeSelf; // Determine if the skill tree is being shown or hidden
+
+            _SkillTreeUI.SetActive(isSkillTreeActive); // Toggle the skill tree UI
+
+            if (isSkillTreeActive)
+            {
+                // When the skill tree is shown, unlock the cursor and make it visible
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                // When the skill tree is hidden, lock the cursor and make it invisible
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+    }
+
+
+    private void HandleSkillTreeToggle()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ToggleSkillTree();
+        }
+    }
+
+
+    public void IncreaseEXPGain(int _MoreExp)
+    {
+       EXP += _MoreExp;
+    }
+
+    public void IncreaseCoinGain(int _MoreCoins)
+    {
+        _CoinToAdd += _MoreCoins;
+    }
+
+    private void UpdateCoinsUI()
+    {
+        _CoinsTXT.text = " " + _Coins.ToString();
+    }
+
 }

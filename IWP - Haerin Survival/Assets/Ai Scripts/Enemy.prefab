@@ -557,8 +557,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _range: {fileID: 4727169911582689172}
   _player: {fileID: 0}
+  _Stats: {fileID: 11400000, guid: 23ad2cc8fda9e1b4c99d073cd1bb65c6, type: 2}
   _attackCooldown: 1
   _damage: 3
+  minSpeed: 5
+  maxSpeed: 10
 --- !u!114 &395933193296935454
 MonoBehaviour:
   m_ObjectHideFlags: 0

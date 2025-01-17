@@ -4,7 +4,14 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Dmg_1
   - Enemy
+  - EXP_!
+  - Dmg_2
+  - EXP_2
+  - Coins_1
+  - Coins_2
+  - _SP
   layers:
   - Default
   - TransparentFX

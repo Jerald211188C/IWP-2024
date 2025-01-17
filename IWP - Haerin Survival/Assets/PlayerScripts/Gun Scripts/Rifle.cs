@@ -11,7 +11,6 @@ public class Rifle : MonoBehaviour
     [SerializeField] private CameraRecoil _cameraRecoil;  
     private SkillTree _skillTree;
     
-    private SimpleEnemy _Enemy;
     [Header("Gun Variables")]
     public string GunName;
     public int CurrentAmmo;
@@ -22,6 +21,7 @@ public class Rifle : MonoBehaviour
     public float ReloadTime = 2f;
     private GameObject FirePoint;
     [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
+
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
@@ -100,8 +100,6 @@ public class Rifle : MonoBehaviour
                 // Check if the hit object has the "Enemy" tag
                 if (hit.collider.CompareTag("Enemy"))
                 {
-                    Debug.Log("Hit an enemy: " + hit.collider.name);
-
                     // Get the Health component from the hit enemy
                     Health enemyHealth = hit.collider.GetComponent<Health>();
 
@@ -109,15 +107,7 @@ public class Rifle : MonoBehaviour
                     {
                         // Apply damage to the enemy
                         enemyHealth.Damage(Damage); // 10 is the damage value (you can change this)
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No Health component found on the enemy.");
-                    }
-                }
-                else
-                {
-                    //Debug.Log("Hit: " + hit.collider.name);
+                    }                
                 }
             }
         }
@@ -128,13 +118,12 @@ public class Rifle : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        Debug.Log("Reloading...");
+       
         // Optionally play a reload animation here
 
         yield return new WaitForSeconds(0.1f); // Wait for the reload duration
 
         CurrentAmmo = MaxAmmo; // Reset ammo after reloading
-        Debug.Log("Reload complete!");
         // Optionally stop the reload animation here
     }
 
@@ -156,7 +145,6 @@ public class Rifle : MonoBehaviour
     public void IncreaseDamage(int amount)
     {
         Damage += amount;
-        Debug.Log("Damage increased by: " + amount + ". New Damage: " + Damage);
     }
 
 }
