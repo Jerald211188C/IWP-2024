@@ -12,6 +12,7 @@ TagManager:
   - Coins_1
   - Coins_2
   - _SP
+  - Shop
   layers:
   - Default
   - TransparentFX

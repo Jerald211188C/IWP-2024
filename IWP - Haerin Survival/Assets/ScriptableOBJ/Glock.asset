@@ -20,7 +20,7 @@ MonoBehaviour:
   _FireRate: 2
   _LastShot: 0
   _NextFireTime: 0
-  _SpawnGun: {fileID: 919132149155446097, guid: 02f6717f8c610d94d9ac430778138918, type: 3}
+  _SpawnGun: {fileID: 7226503707197014812, guid: a9a61a61b5579fb4a82327dfd75646d4, type: 3}
   gunPosition: {x: 0, y: 0, z: 0}
   firePointPos: {x: 0, y: 0, z: 0}
   firePointRotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}

@@ -15,13 +15,14 @@ MonoBehaviour:
   _GunName: Assault rifle
   _CurrentAmmo: 0
   _MaxAmmo: 30
-  _Damage: 5
+  _Damage: 10
   _ReloadTime: 3
   _FireRate: 5
   _LastShot: 0
   _NextFireTime: 0
   _SpawnGun: {fileID: 532913073027713679, guid: a3a0c9a6ecad856438cda38c795e61ae, type: 3}
-  gunPosition: {x: 0.56, y: -0.32, z: 0.54}
+  gunPosition: {x: 0.49, y: -0.27, z: 0.714}
   firePointPos: {x: 0, y: 0, z: 1}
+  firePointRotation: {x: 0, y: 0, z: 0, w: 0}
   gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   FirePointOffset: {x: 0, y: 0, z: 0}

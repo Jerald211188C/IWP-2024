@@ -8,20 +8,22 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private Transform headTransform;
     [SerializeField] private Camera _camera;
     [SerializeField] private GameObject Head;
+    [SerializeField] private PlayerStats playerStats;
     private GameObject spawnedGun;
-    //private Inventorys inventory;
+    private Inventorys inventory;
 
     [Header("Event System")]
     public static Gamemanager _instance;
 
     private void Awake()
     {
+        playerStats.ResetStats();
         _instance = this;
     }
 
     public void EquipWeapon(BaseGunScript gunModel)
     {
-        //inventory.EquipWeapon(gunModel); // Equip the selected weapon
+        SpawnGun();
     }
 
     public event Action _iswalking;
@@ -47,10 +49,6 @@ public class Gamemanager : MonoBehaviour
     }
 
     // Add weapon to inventory
-    public void AddWeaponToInventory(BaseGunScript newGun)
-    {
-        //inventory.AddWeaponToInventory(newGun); // Add weapon to inventory
-    }
 
     // Spawn additional guns (can be used in the shop, for example)
     public void SpawnGuns(BaseGunScript _gunModel, Transform _headTrans)

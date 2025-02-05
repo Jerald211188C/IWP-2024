@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7563bfc789206b4ea01711f6268a4b4, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  _EXP: 20
-  _StartingCoins: 0
-  _CoinsToAdd: 20
+  _EXP: 50
+  _StartingCoins: 100
+  _CoinsToAdd: 100
+  _CurrentCoins: 100
+  _DamageMultiplier: 1
+  defaultEXP: 50
+  defaultStartingCoins: 100
+  defaultCoinsToAdd: 100
+  defaultDamageMultiplier: 1

@@ -249,7 +249,7 @@ RectTransform:
   m_Father: {fileID: 5072035913541994446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.35891724, y: 0}
   m_SizeDelta: {x: -6.9439, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -557,7 +557,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _range: {fileID: 4727169911582689172}
   _player: {fileID: 0}
-  _Stats: {fileID: 11400000, guid: 23ad2cc8fda9e1b4c99d073cd1bb65c6, type: 2}
   _attackCooldown: 1
   _damage: 3
   minSpeed: 5
@@ -578,6 +577,7 @@ MonoBehaviour:
   _value: 100
   _Slider: {fileID: 8317399044113330595}
   redFlashImage: {fileID: 0}
+  _SceneChange: {fileID: 0}
   isPlayer: 0
   Death:
     m_PersistentCalls:

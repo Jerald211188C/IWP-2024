@@ -7,6 +7,7 @@ public class RoundController : MonoBehaviour
     [SerializeField] private int _StartingRound = 1;
     [SerializeField] private int _CurrentRound;
     [SerializeField] private GameObject _EnemyPrefab;
+    [SerializeField] private GameObject _BossPreFab;
     [SerializeField] private Transform _SpawnPoint1;
     [SerializeField] private Transform _SpawnPoint2;
     [SerializeField] private Transform _SpawnPoint3;
@@ -50,6 +51,12 @@ public class RoundController : MonoBehaviour
 
         if (_CurrentRound % 10 == 0)
         {
+            // Choose a random spawn point for the boss
+            Transform[] spawnPoints = new Transform[] { _SpawnPoint1, _SpawnPoint2, _SpawnPoint3, _SpawnPoint4 };
+            Transform selectedSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+            // Instantiate the boss at the selected spawn point
+            Instantiate(_BossPreFab, selectedSpawnPoint.position, selectedSpawnPoint.rotation);
             Debug.Log("Boss Round");
         }
     }

@@ -6,6 +6,7 @@ public class SimpleEnemy : MonoBehaviour
 {
     [SerializeField] private RangeDetect _range;
     [SerializeField] private GameObject _player;
+    [SerializeField] private PlayerStats _Stats;
 
     private RoundController _roundController; 
     private LevelUpSystem _levelUpSystem;
@@ -19,13 +20,17 @@ public class SimpleEnemy : MonoBehaviour
 
     [Header("Speed Settings")]
     [SerializeField] private float minSpeed = 5f;  
-    [SerializeField] private float maxSpeed = 10f;  
+    [SerializeField] private float maxSpeed = 10f; 
+    [SerializeField] Animator animator;
 
     private float _cooldown;
     private PlayerMovement _pm;
 
+
+
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         _levelUpSystem = FindFirstObjectByType<LevelUpSystem>();
         _roundController = FindFirstObjectByType<RoundController>();
      
@@ -69,9 +74,14 @@ public class SimpleEnemy : MonoBehaviour
         {
             if (_cooldown > _attackCooldown && _pm != null)
             {
+                animator.SetBool("Attack", true);
                 _pm.Health.Damage(_damage); // Attack player
                 _cooldown = 0; // Reset cooldown
             }
+        }
+        else
+        {
+            animator.SetBool("Attack", false);
         }
     }
 
@@ -92,8 +102,10 @@ public class SimpleEnemy : MonoBehaviour
             _roundController._EnemyCount--;
         }
 
-        _levelUpSystem.AddExp(_pm.EXP);
-        _pm._Coins += _pm._CoinToAdd;
+        _levelUpSystem.AddExp(_Stats._EXP);
+        _Stats._StartingCoins += _Stats._CoinsToAdd;
+        _pm.UpdateCoinsUI();
+
 
         Destroy(gameObject);
     }

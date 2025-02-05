@@ -9,15 +9,17 @@ public class Rifle : MonoBehaviour
     [SerializeField] private BaseGunScript _Rifle;
     [SerializeField] private GameObject _enemyObject; // Make sure to assign this in the Inspector
     [SerializeField] private CameraRecoil _cameraRecoil;  
-    private SkillTree _skillTree;
+    [SerializeField] private PlayerStats _playerStats;
     
     [Header("Gun Variables")]
     public string GunName;
     public int CurrentAmmo;
     public int MaxAmmo;
     public int Damage;
+    public int AddDmg;
     public float LastShot;
     public float NextFireTime;
+    public float DamageMultiplier;
     public float ReloadTime = 2f;
     private GameObject FirePoint;
     [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
@@ -25,10 +27,6 @@ public class Rifle : MonoBehaviour
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
-    private void Awake()
-    {
-        _skillTree = new SkillTree();
-    }
     void Start()
     {
 
@@ -54,10 +52,11 @@ public class Rifle : MonoBehaviour
         Damage = _Rifle._Damage;
         LastShot = _Rifle._LastShot;
         NextFireTime = _Rifle._NextFireTime;
+        DamageMultiplier = _playerStats._DamageMultiplier;
 
         LastShot = NextFireTime;
         
-        Gamemanager._instance._iswalking += Shoot;
+        //Gamemanager._instance._iswalking += Shoot;
         //GetFirePoint(); 
         UpdateAmmoUI();
     }
@@ -106,7 +105,10 @@ public class Rifle : MonoBehaviour
                     if (enemyHealth != null)
                     {
                         // Apply damage to the enemy
-                        enemyHealth.Damage(Damage); // 10 is the damage value (you can change this)
+                        float total = Damage * _playerStats._DamageMultiplier;
+                        enemyHealth.Damage(Damage * _playerStats._DamageMultiplier); // 10 is the damage value (you can change this)
+                        Debug.Log($"DamageMultiplier: {_playerStats._DamageMultiplier}");
+                        Debug.Log($"Damage: {total}");
                     }                
                 }
             }
@@ -130,16 +132,6 @@ public class Rifle : MonoBehaviour
     private void UpdateAmmoUI()
     {
         ammoText.text = "Ammo: " + CurrentAmmo + "/" + MaxAmmo;
-    }
-
-    public bool DealMoreDamage()
-    {
-        return _skillTree.IsSkillUnlocked(SkillTree.SkillType.MoreDamage);
-    }
-
-    public SkillTree GetPlayerSkills()
-    {
-        return _skillTree;
     }
 
     public void IncreaseDamage(int amount)

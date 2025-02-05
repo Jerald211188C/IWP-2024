@@ -9,21 +9,16 @@ public class ExpWindow : MonoBehaviour
     private Image expBarImage;
     private LevelUpSystem levelUpSystem;
     private LevelSystemAnimation systemAnimation;
-    private SkillTree playerSkills;
+    [SerializeField] SkillTreeManager _skillTree;
     private void Awake()
     {
         levelText = transform.Find("levelText").GetComponent<TextMeshProUGUI>();
         expBarImage = transform.Find("bar").Find("fill").GetComponent<Image>();
-        playerSkills = new SkillTree();
     }
 
     private void SetExpBarSize(float expNormalized)
     {
         expBarImage.fillAmount = expNormalized;
-    }
-    public SkillTree GetPlayerSkills()
-    {
-        return playerSkills;
     }
 
     private void SetlevelNumber(int levelnumber)
@@ -51,8 +46,7 @@ public class ExpWindow : MonoBehaviour
         // Reset bar to 0 visually (optional since OnExpChanged handles this)
         SetExpBarSize(0);
         SetlevelNumber(levelUpSystem.GetLevelNumber());
-        playerSkills.AddSkillPoints();
-        
+        _skillTree.SkillUpdate();
     }
 
   

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
@@ -7,34 +8,23 @@ public class Shop : MonoBehaviour
     [SerializeField] private BaseGunScript RPG;
     [SerializeField] private Transform headTransform;
     [SerializeField] private Gamemanager gamemanager;
+    [Header("References")]
+    [SerializeField] private Transform weaponHolder;
+    [SerializeField] private Button buyAKButton; // Reference to the button in the UI
+    private GameObject spawnedGun;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void SpawnGun()
     {
-        // No need to assign spawnedGun here, we can directly use glock in the spawn method
+        // Spawn the gun and position it
+        spawnedGun = Instantiate(glock._SpawnGun);
+        spawnedGun.transform.SetParent(weaponHolder);
+        spawnedGun.transform.localPosition = glock.gunPosition;
+        spawnedGun.transform.localRotation = glock.gunRotation;
+
+        // Add the spawned gun to the inventory
+        //inventory.AddWeaponToInventory(gunModel); // Add the gun to the inventory
+        Debug.Log("Starting gun added to inventory: " + glock._GunName);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            // Add the gun to the inventory when the player presses "U"
-            gamemanager.AddWeaponToInventory(glock);
-            Debug.Log("Glock added to inventory");
-
-            // Optionally, immediately equip the weapon after purchasing
-            gamemanager.EquipWeapon(glock);
-        }
-
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            // Add the gun to the inventory when the player presses "U"
-            gamemanager.AddWeaponToInventory(RPG);
-            Debug.Log("Glock added to inventory");
-
-            // Optionally, immediately equip the weapon after purchasing
-            gamemanager.EquipWeapon(RPG);
-        }
-    }
+    
 }

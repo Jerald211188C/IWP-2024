@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _PlayerCamera;
     [SerializeField] private Camera _Camera;
     [SerializeField] private GameObject _Player;
-
+    private bool isKnockbackActive = false;
     [Header("Player Variables")]
     [SerializeField] private float _Speed; // Base speed
     [SerializeField] private float _SprintMultiplier = 1.5f; // Sprint speed multiplier
@@ -19,6 +19,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _Gravity = -9.81f;
     [SerializeField] private PlayerStats _Stats;
     [SerializeField] private GameObject _SkillTreeUI;
+    [SerializeField] private GameObject ShopUI;
+    private bool isPlayerInShop;
+
+    [Header("Knockback Settings")]
+    private Vector3 knockbackVelocity; // Store knockback velocity here
+    private float knockbackDuration = 0.1f; // Duration of the knockback effect
 
     [Header("Stats UI")]
     [SerializeField] private TextMeshProUGUI _CoinsTXT;
@@ -35,9 +41,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        EXP = _Stats._EXP;
-        _Coins = _Stats._StartingCoins;
-        _CoinToAdd = _Stats._CoinsToAdd;
+        isPlayerInShop = false;
+        // Ensure the ShopUI is disabled at the start
+        if (ShopUI != null)
+        {
+            ShopUI.SetActive(false);
+        }
         if (_SkillTreeUI != null)
         {
             // Temporarily enable the UI
@@ -49,8 +58,25 @@ public class PlayerMovement : MonoBehaviour
         health.Death.AddListener(Death);
     }
 
-    void Update()
+
+void Update()
     {
+
+        if (isKnockbackActive)
+        {
+            // Apply knockback and simulate gravity (arc-like motion)
+            _CharacterController.Move(knockbackVelocity * Time.deltaTime);
+            knockbackVelocity.y += _Gravity * Time.deltaTime; // Apply gravity to simulate arc
+
+            if (knockbackVelocity.y <= 0 && _CharacterController.isGrounded)
+            {
+                // End knockback when the player hits the ground
+                isKnockbackActive = false;
+            }
+
+            return;
+        }
+
         _PlayerMovementInput = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         _PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
@@ -175,9 +201,53 @@ public class PlayerMovement : MonoBehaviour
         _CoinToAdd += _MoreCoins;
     }
 
-    private void UpdateCoinsUI()
+    public void UpdateCoinsUI()
     {
-        _CoinsTXT.text = " " + _Coins.ToString();
+        _CoinsTXT.text = " " + _Stats._StartingCoins.ToString();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the player enters the shop's collider
+        if (other.CompareTag("Shop"))
+        {
+            isPlayerInShop = true;
+
+            // Enable the shop UI
+            if (ShopUI != null)
+            {
+                ShopUI.SetActive(true);
+            }
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Debug.Log("Player entered the shop.");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // Check if the player exits the shop's collider
+        if (other.CompareTag("Shop"))
+        {
+            isPlayerInShop = false;
+
+            // Disable the shop UI
+            if (ShopUI != null)
+            {
+                ShopUI.SetActive(false);
+            }
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = false;
+            Debug.Log("Player left the shop.");
+        }
+    }
+
+    public void ApplyKnockback(Vector3 knockbackDirection, float knockbackForce)
+    {
+        // Apply an initial velocity in the direction of the knockback
+        knockbackVelocity = knockbackDirection * knockbackForce;
+        knockbackVelocity.y = 5f; // Add a small initial upward force to simulate an arc
+        isKnockbackActive = true;
     }
 
 }

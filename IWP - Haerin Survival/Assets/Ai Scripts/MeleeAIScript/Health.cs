@@ -9,6 +9,7 @@ public class Health : MonoBehaviour
     [SerializeField] public float _value; // Current Health
     [SerializeField] private Slider _Slider;
     [SerializeField] private Image redFlashImage; // Reference to the red flash Image
+    [SerializeField] private SceneChange _SceneChange;
 
     [Header("Settings")]
     [SerializeField] private bool isPlayer = false; // Identify if this is the player's health
@@ -39,9 +40,20 @@ public class Health : MonoBehaviour
 
         if (_value <= 0)
         {
+           
             Death.Invoke(); // Notify listeners of death
             Destroy(gameObject); // Destroy the GameObject
+            if (isPlayer)
+            {
+                _SceneChange.GoEnd();
+            }
         }
+    }
+
+    public void Heal(float amt)
+    {
+        _value += amt;
+        _Slider.value = _value;
     }
 
     private IEnumerator FlashRed()

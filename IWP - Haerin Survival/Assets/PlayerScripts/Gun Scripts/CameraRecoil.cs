@@ -32,8 +32,6 @@ public class CameraRecoil : MonoBehaviour
 
     void Update()
     {
-        //isAiming = GunSystem_Script.isADS;
-        //isAiming = AimSettings.isAiming;
 
         targetRotations = Vector3.Lerp(targetRotations, Vector3.zero, returnspeed * Time.deltaTime);
         currentRotations = Vector3.Slerp(currentRotations, targetRotations, snappiness * Time.deltaTime);
