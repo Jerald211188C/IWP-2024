@@ -20,9 +20,15 @@ MonoBehaviour:
   _FireRate: 5
   _LastShot: 0
   _NextFireTime: 0
+  _GunShot: {fileID: 8300000, guid: 7eb366f6f0c9c4a4e820576b7f2ed888, type: 3}
+  _Hit: {fileID: 8300000, guid: dd81767b74368244788095c8092f73f7, type: 3}
+  _ispistol: 0
+  _isRPG: 0
   _SpawnGun: {fileID: 532913073027713679, guid: a3a0c9a6ecad856438cda38c795e61ae, type: 3}
   gunPosition: {x: 0.49, y: -0.27, z: 0.714}
   firePointPos: {x: 0, y: 0, z: 1}
   firePointRotation: {x: 0, y: 0, z: 0, w: 0}
   gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
   FirePointOffset: {x: 0, y: 0, z: 0}
+  bulletTrailPrefab: {fileID: 1034246052630860778, guid: 867a7c16e4c377b4195d98a901af6d2a, type: 3}
+  trailDuration: 1

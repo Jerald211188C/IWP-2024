@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using System.Collections;
 using TMPro;
 
@@ -7,136 +6,221 @@ public class Rifle : MonoBehaviour
 {
     [Header("Gun References")]
     [SerializeField] private BaseGunScript _Rifle;
-    [SerializeField] private GameObject _enemyObject; // Make sure to assign this in the Inspector
-    [SerializeField] private CameraRecoil _cameraRecoil;  
+    [SerializeField] private CameraRecoil _cameraRecoil;
     [SerializeField] private PlayerStats _playerStats;
-    
+
     [Header("Gun Variables")]
-    public string GunName;
     public int CurrentAmmo;
     public int MaxAmmo;
-    public int Damage;
-    public int AddDmg;
+    public int ReserveAmmo;
+    public int RPGReserveAmmo;
     public float LastShot;
     public float NextFireTime;
-    public float DamageMultiplier;
     public float ReloadTime = 2f;
-    private GameObject FirePoint;
-    [SerializeField] private GameObject firePointPrefab;  // Reference to the FirePoint prefab
+    public int Damage;
+
+    [Header("Gun Prefabs")]
+    [SerializeField] private GameObject firePointPrefab;
+    [SerializeField] private GameObject _rpgProjectilePrefab;
+    [SerializeField] private GameObject _bulletTrailPrefab;
 
     [Header("Gun UI")]
     private TextMeshProUGUI ammoText;
 
+    private GameObject FirePoint;
+
     void Start()
     {
+        InitializeComponents();
+        InitializeGunProperties();
+    }
 
-        //Enemy = _enemyObject.GetComponent<SimpleEnemy>();
+    void Update()
+    {
+        HandleInput();
+        UpdateCooldown();
+    }
+
+    private void InitializeComponents()
+    {
         if (ammoText == null)
         {
             ammoText = GameObject.Find("AmmoText").GetComponent<TextMeshProUGUI>();
         }
 
-        if (firePointPrefab != null)
+        if (firePointPrefab != null && FirePoint == null)
         {
-            // Instantiate the FirePoint prefab and assign it to FirePoint
-            FirePoint = Instantiate(firePointPrefab, transform);  // This makes FirePoint a child of the gun
-            FirePoint.transform.localPosition = _Rifle.firePointPos; // Position it at (0, 0, 3.67) relative to the gun's origin
+            FirePoint = Instantiate(firePointPrefab, transform);
+            FirePoint.transform.localPosition = _Rifle.firePointPos;
             FirePoint.transform.localRotation = _Rifle.firePointRotation;
-
         }
+    }
 
-        CurrentAmmo = _Rifle._CurrentAmmo;
+    private void InitializeGunProperties()
+    {
+        CurrentAmmo = _Rifle._MaxAmmo;
         MaxAmmo = _Rifle._MaxAmmo;
-        CurrentAmmo = MaxAmmo;
-        GunName = _Rifle._GunName;
-        Damage = _Rifle._Damage;
-        LastShot = _Rifle._LastShot;
         NextFireTime = _Rifle._NextFireTime;
-        DamageMultiplier = _playerStats._DamageMultiplier;
+        _bulletTrailPrefab = _Rifle.bulletTrailPrefab;
 
-        LastShot = NextFireTime;
-        
-        //Gamemanager._instance._iswalking += Shoot;
-        //GetFirePoint(); 
         UpdateAmmoUI();
     }
 
-    void Update()
+    private void HandleInput()
     {
-        
         if (Input.GetMouseButtonDown(0) && LastShot <= 0f && CurrentAmmo > 0)
         {
-            CurrentAmmo -= 1;
-            Shoot();
-            //Gamemanager._instance.IsPlayerWalking();
-            //Debug.Log(CurrentAmmo);
-            ammoText.text = CurrentAmmo.ToString();
-            LastShot = NextFireTime;
+            if (_Rifle._isRPG)
+            {
+                ShootRPG();
+            }
+            else
+            {
+                Shoot();
+            }
         }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Reload());
-          
         }
-
-        LastShot -= Time.deltaTime;
-        UpdateAmmoUI();
     }
 
     private void Shoot()
     {
-   
-        if (FirePoint != null)
-        {
-            Ray ray = new Ray(FirePoint.transform.position, FirePoint.transform.forward);
-            RaycastHit hit;
+        if (FirePoint == null) return;
 
-            // Visualize the ray in the Scene view
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f); // Length of the ray is 100 units
-            // Perform the raycast
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                // Check if the hit object has the "Enemy" tag
-                if (hit.collider.CompareTag("Enemy"))
-                {
-                    // Get the Health component from the hit enemy
-                    Health enemyHealth = hit.collider.GetComponent<Health>();
+        CurrentAmmo--;
+        SoundManager.instance.PlaySound(_Rifle._GunShot);
+        LastShot = NextFireTime;
 
-                    if (enemyHealth != null)
-                    {
-                        // Apply damage to the enemy
-                        float total = Damage * _playerStats._DamageMultiplier;
-                        enemyHealth.Damage(Damage * _playerStats._DamageMultiplier); // 10 is the damage value (you can change this)
-                        Debug.Log($"DamageMultiplier: {_playerStats._DamageMultiplier}");
-                        Debug.Log($"Damage: {total}");
-                    }                
-                }
-            }
-        }
-
+        HandleRaycast();
         _cameraRecoil.RecoilFire();
+        UpdateAmmoUI();
     }
 
+    private void HandleRaycast()
+    {
+        Ray ray = new Ray(FirePoint.transform.position, FirePoint.transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
+        {
+            HandleEnemyHit(hit);
+            SpawnBulletTrail(hit.point);
+        }
+    }
+
+    private void HandleEnemyHit(RaycastHit hit)
+    {
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            Health enemyHealth = hit.collider.GetComponent<Health>();
+            if (enemyHealth != null)
+            {
+                float totalDamage = Damage * _playerStats._DamageMultiplier;
+                SoundManager.instance.PlaySound(_Rifle._Hit);
+                enemyHealth.Damage(totalDamage);
+                Debug.Log($"Damage: {totalDamage}");
+            }
+        }
+    }
+
+    private void SpawnBulletTrail(Vector3 target)
+    {
+        if (_bulletTrailPrefab == null) return;
+
+        GameObject trail = Instantiate(_bulletTrailPrefab, FirePoint.transform.position, Quaternion.identity);
+        StartCoroutine(MoveTrail(trail, target));
+        Destroy(trail, 0.5f);
+    }
+
+    private IEnumerator MoveTrail(GameObject trail, Vector3 target)
+    {
+        float elapsedTime = 0f;
+        float duration = 0.1f;
+        Vector3 start = trail.transform.position;
+
+        while (elapsedTime < duration)
+        {
+            trail.transform.position = Vector3.Lerp(start, target, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        trail.transform.position = target;
+    }
 
     private IEnumerator Reload()
     {
-       
-        // Optionally play a reload animation here
+        yield return new WaitForSeconds(ReloadTime);
 
-        yield return new WaitForSeconds(0.1f); // Wait for the reload duration
+        if (_Rifle._ispistol)
+        {
+            CurrentAmmo = 30; // Infinite ammo for pistol
+        }
+        else if (_Rifle._isRPG)
+        {
+            int ammoNeeded = MaxAmmo - CurrentAmmo;
+            int ammoToLoad = Mathf.Min(ammoNeeded, RPGReserveAmmo);
 
-        CurrentAmmo = MaxAmmo; // Reset ammo after reloading
-        // Optionally stop the reload animation here
+            CurrentAmmo += ammoToLoad;
+            RPGReserveAmmo -= ammoToLoad; // Use RPGReserveAmmo for RPG
+        }
+        else
+        {
+            int ammoNeeded = MaxAmmo - CurrentAmmo;
+            int ammoToLoad = Mathf.Min(ammoNeeded, ReserveAmmo);
+
+            CurrentAmmo += ammoToLoad;
+            ReserveAmmo -= ammoToLoad; // Use ReserveAmmo for regular weapons
+        }
+
+        UpdateAmmoUI();
     }
 
-    private void UpdateAmmoUI()
+    private void ShootRPG()
     {
-        ammoText.text = "Ammo: " + CurrentAmmo + "/" + MaxAmmo;
+        if (FirePoint == null) return;
+
+        GameObject rpgProjectile = Instantiate(_rpgProjectilePrefab, FirePoint.transform.position, FirePoint.transform.rotation);
+        Rigidbody rb = rpgProjectile.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.AddForce(FirePoint.transform.forward * 50f, ForceMode.Impulse);
+        }
+
+        SoundManager.instance.PlaySound(_Rifle._GunShot);
+        CurrentAmmo--;
+        UpdateAmmoUI();
     }
 
-    public void IncreaseDamage(int amount)
+    private void UpdateCooldown()
     {
-        Damage += amount;
+        if (LastShot > 0)
+        {
+            LastShot -= Time.deltaTime;
+        }
     }
 
+    public void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+        {
+            if (_Rifle._ispistol)
+            {
+                // Display pistol ammo (infinite)
+                ammoText.text = $"Ammo: {CurrentAmmo}/{MaxAmmo}";
+            }
+            else if (_Rifle._isRPG)
+            {
+                // Display RPG ammo (current and reserve)
+                ammoText.text = $"Ammo: {CurrentAmmo}/{RPGReserveAmmo}";
+            }
+            else
+            {
+                // Display regular rifle ammo (current and reserve)
+                ammoText.text = $"Ammo: {CurrentAmmo}/{ReserveAmmo}";
+            }
+        }
+    }
 }

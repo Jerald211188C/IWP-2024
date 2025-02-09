@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: Exp Increase
   description: +5% EXP
   icon: {fileID: 21300000, guid: bc95d3a764c10194f8e60dfefe1acc5a, type: 3}
-  cost: 5
+  cost: 2
   prerequisites: []
   isUnlocked: 0
   SkillEffect: 3

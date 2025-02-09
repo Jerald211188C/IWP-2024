@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8788291831228683716}
   - component: {fileID: 7629484411230598349}
   - component: {fileID: 296959645305822829}
+  - component: {fileID: -8151492611613104134}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.22, y: 1.4995981, z: 3.8255827}
-  m_LocalScale: {x: 3.47, y: 3.47, z: 3.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,3 +150,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-8151492611613104134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8804982591166008370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 839d3a7165ba57a45b58ab7565e2be3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionRadius: 100
+  explosionDamage: 1000
+  _RPG: {fileID: 11400000, guid: 460fa871cb8d5de4a956e32e7d27befd, type: 2}

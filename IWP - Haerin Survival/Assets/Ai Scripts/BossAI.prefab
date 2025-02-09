@@ -249,7 +249,7 @@ RectTransform:
   m_Father: {fileID: 5072035913541994446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.35891724, y: 0}
   m_SizeDelta: {x: -6.9439, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -428,7 +428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8106500373940463653
 Transform:
   m_ObjectHideFlags: 0
@@ -578,9 +578,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  player: {fileID: 0}
+  animator: {fileID: 0}
+  _range: {fileID: 0}
+  audioClip: {fileID: 0}
+  audioClipAGain: {fileID: 0}
   chaseSpeed: 10
   attackRange: 3
+  _attackCooldown: 0
+  _damage: 0
   ultimateRange: 30
   ultimateCooldown: 3
   jumpForce: 10

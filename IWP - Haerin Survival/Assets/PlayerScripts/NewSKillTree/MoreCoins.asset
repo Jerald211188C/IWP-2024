@@ -19,4 +19,4 @@ MonoBehaviour:
   prerequisites: []
   isUnlocked: 0
   SkillEffect: 2
-  effectValue: 10000
+  effectValue: 100

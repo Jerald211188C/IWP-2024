@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
+
 public class BossAI : MonoBehaviour
 {
     public enum BossState { Chase, Attack, Ultimate }
@@ -14,7 +15,6 @@ public class BossAI : MonoBehaviour
     private GameObject _player;
     [SerializeField] Animator animator;
     [SerializeField] private RangeDetect _range;
-    [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip audioClip;
     [SerializeField] private AudioClip audioClipAGain;
 
@@ -41,6 +41,7 @@ public class BossAI : MonoBehaviour
 
     void Start()
     {
+        
         Playonce = true;
         Again = false;
         _player = GameObject.FindWithTag("Player");
@@ -103,15 +104,13 @@ public class BossAI : MonoBehaviour
             Debug.Log("Boss is using Ultimate!");
             if (Playonce)
             {
-                audioSource.clip = audioClip;
-                audioSource.Play();
+                SoundManager.instance.PlaySound(audioClip);
                 Playonce = false;
                 Again = true;
             }
             else if (Again)
             {
-                audioSource.clip = audioClipAGain;
-                audioSource.Play();
+                SoundManager.instance.PlaySound(audioClipAGain);    
             }
 
             agent.isStopped = true;

@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: wdwd
   description: +15% Power
   icon: {fileID: 21300000, guid: 4ac8f57f6b02fca4db5742f2271ec9f7, type: 3}
-  cost: 10
+  cost: 7
   prerequisites:
   - {fileID: 11400000, guid: 354d48948af86354e816c44f238dbaab, type: 2}
   isUnlocked: 0

@@ -14,6 +14,7 @@ public class ShopItemUI : MonoBehaviour
     private void Start()
     {
         UpdateUI();
+        UpdateUIAmmo();
     }
 
     public void UpdateUI()
@@ -21,5 +22,12 @@ public class ShopItemUI : MonoBehaviour
         itemNameText.text = shopItem.name;
         itemIcon.sprite = shopItem.icon;
         itemPriceText.text = shopItem.HealthCost.ToString() + " Coins";
+    }
+
+    public void UpdateUIAmmo()
+    {
+        itemNameText.text = shopItem.name;
+        itemIcon.sprite = shopItem.icon;
+        itemPriceText.text = shopItem.AmmoCost.ToString() + " Coins";
     }
 }

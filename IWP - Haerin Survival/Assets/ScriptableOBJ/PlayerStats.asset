@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   _EXP: 50
-  _StartingCoins: 100
+  _StartingCoins: 500
   _CoinsToAdd: 100
-  _CurrentCoins: 100
+  _CurrentCoins: 500
   _DamageMultiplier: 1
   defaultEXP: 50
-  defaultStartingCoins: 100
+  defaultStartingCoins: 500
   defaultCoinsToAdd: 100
   defaultDamageMultiplier: 1

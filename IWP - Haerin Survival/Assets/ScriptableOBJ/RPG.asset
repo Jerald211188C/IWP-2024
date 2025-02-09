@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be243a7275131e49aec142028105dfd, type: 3}
   m_Name: RPG
   m_EditorClassIdentifier: 
-  _GunName: Assault rifle
-  _CurrentAmmo: 0
-  _MaxAmmo: 30
-  _Damage: 5
-  _ReloadTime: 3
-  _FireRate: 5
+  _GunName: RPG
+  _CurrentAmmo: 1
+  _MaxAmmo: 10
+  _Damage: 1000
+  _ReloadTime: 5
+  _FireRate: 1
   _LastShot: 0
   _NextFireTime: 0
-  _SpawnGun: {fileID: 8804982591166008370, guid: 855c20ed6523c4a4b933ea7a5465d471, type: 3}
-  gunPosition: {x: 0.56, y: -0.32, z: 0.54}
-  firePointPos: {x: 0, y: 0, z: 3.67}
-  gunRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
+  _GunShot: {fileID: 8300000, guid: 20e4b01fe457d0b4bad3680a05bf970c, type: 3}
+  _Hit: {fileID: 8300000, guid: 1d476c5c681e7e24eb77909c28247335, type: 3}
+  _ispistol: 0
+  _isRPG: 1
+  _SpawnGun: {fileID: 7447587020231489840, guid: 00d34b90ae1fc2c4bb9fb3d1940eec74, type: 3}
+  gunPosition: {x: 0, y: 0, z: 0}
+  firePointPos: {x: -1, y: 1.75, z: -10}
+  firePointRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  gunRotation: {x: 0, y: 0, z: 0, w: 0}
   FirePointOffset: {x: 0, y: 0, z: 0}
+  bulletTrailPrefab: {fileID: 1034246052630860778, guid: 867a7c16e4c377b4195d98a901af6d2a, type: 3}
+  trailDuration: 0.5

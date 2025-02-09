@@ -5,6 +5,8 @@ using UnityEngine;
 public class WeaponSwitch : MonoBehaviour
 {
     public int selectedWeapon = 0;
+    [SerializeField] Rifle _Rifle;
+    [SerializeField] Rifle _Glock;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,10 +23,14 @@ public class WeaponSwitch : MonoBehaviour
         {
             if (selectedWeapon >= transform.childCount - 1)
             {
+                _Rifle.UpdateAmmoUI();
+                _Glock.UpdateAmmoUI();
                 selectedWeapon = 0;
             }
             else
             {
+                _Rifle.UpdateAmmoUI();
+                _Glock.UpdateAmmoUI();
                 selectedWeapon++;
             }
         }
@@ -33,10 +39,14 @@ public class WeaponSwitch : MonoBehaviour
         {
             if (selectedWeapon <= 0)    
             {
+                _Rifle.UpdateAmmoUI();
+                _Glock.UpdateAmmoUI();
                 selectedWeapon = transform.childCount - 1;
             }
             else
             {
+                _Rifle.UpdateAmmoUI();
+                _Glock.UpdateAmmoUI();
                 selectedWeapon--;
             }
         }

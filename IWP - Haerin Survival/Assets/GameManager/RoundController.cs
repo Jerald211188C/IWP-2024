@@ -12,57 +12,62 @@ public class RoundController : MonoBehaviour
     [SerializeField] private Transform _SpawnPoint2;
     [SerializeField] private Transform _SpawnPoint3;
     [SerializeField] private Transform _SpawnPoint4;
-    [SerializeField] TextMeshProUGUI _Roundtext;
+    [SerializeField] private TextMeshProUGUI _Roundtext;
     public int _EnemyCount;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private bool _isRoundActive = false;
+
     void Start()
     {
         _CurrentRound = _StartingRound;
         StartRound();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.U)) // When there are no enemies left in the scene
+        if (_EnemyCount <= 0 && _isRoundActive)
         {
             EndOfRound();
-        }
-
-        if (_EnemyCount <= 0)
-        {
-            EndOfRound();
-            StartRound();
         }
     }
 
     private void EndOfRound()
     {
+        _isRoundActive = false; // Prevent overlapping rounds
+        Debug.Log("Before" + _CurrentRound);
         _CurrentRound++;
+        Debug.Log("After" + _CurrentRound);
         _Roundtext.text = "Wave: " + _CurrentRound.ToString();
-        BossRround();
+
+        // Check if it's a boss round
+        if (_CurrentRound % 10 == 0)
+        {
+            BossRround();
+        }
+        else
+        {
+            StartCoroutine(NextRound());
+        }
     }
 
     private void BossRround()
     {
-        int _BossRound;
-        _BossRound = _CurrentRound / 10;
+        // Choose a random spawn point for the boss
+        Transform[] spawnPoints = new Transform[] { _SpawnPoint1, _SpawnPoint2, _SpawnPoint3, _SpawnPoint4 };
+        Transform selectedSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        if (_CurrentRound % 10 == 0)
-        {
-            // Choose a random spawn point for the boss
-            Transform[] spawnPoints = new Transform[] { _SpawnPoint1, _SpawnPoint2, _SpawnPoint3, _SpawnPoint4 };
-            Transform selectedSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        // Instantiate the boss at the selected spawn point
+        Instantiate(_BossPreFab, selectedSpawnPoint.position, selectedSpawnPoint.rotation);
+        Debug.Log("Boss Round");
 
-            // Instantiate the boss at the selected spawn point
-            Instantiate(_BossPreFab, selectedSpawnPoint.position, selectedSpawnPoint.rotation);
-            Debug.Log("Boss Round");
-        }
+        // Start the next round after the boss is defeated
+        StartCoroutine(NextRound());
     }
 
     private void StartRound()
     {
+        _isRoundActive = true;
+
         // Calculate the enemy count using the Fibonacci sequence
         _EnemyCount = GetFibonacciNumber(_CurrentRound);
 
@@ -103,7 +108,7 @@ public class RoundController : MonoBehaviour
 
     private IEnumerator NextRound()
     {
-        yield return new WaitForSeconds(2f); // Wait for the reload duration
+        yield return new WaitForSeconds(2f); // Wait before starting the next round
         StartRound();
     }
 }

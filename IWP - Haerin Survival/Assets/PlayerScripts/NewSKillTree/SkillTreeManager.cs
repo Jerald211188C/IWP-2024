@@ -43,14 +43,12 @@ public class SkillTreeManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (description != null)
         {
-            skillPoints += 1;
-            UpdateSkillButtons();
-            UpdateSkillPaths();
+            description.text = "Skill Points: " + skillPoints.ToString();
         }
-        description.text = "Skill Points: " + skillPoints.ToString();
     }
+
 
     public void SkillUpdate()
     {

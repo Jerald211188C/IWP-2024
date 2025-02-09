@@ -9,6 +9,8 @@ public class ShopItems : ScriptableObject
     public string description;
     public Sprite icon;
     public int HealthCost;
+    public int AmmoCost;
+    public int RPGCost;
     public bool isbought = false;
 
 
@@ -24,7 +26,8 @@ public class ShopItems : ScriptableObject
     public void ResetStats()
     {
         HealthCost = defaultcost;
-
+        AmmoCost = defaultcost;
+        RPGCost = defaultcost;
     }
 
 }

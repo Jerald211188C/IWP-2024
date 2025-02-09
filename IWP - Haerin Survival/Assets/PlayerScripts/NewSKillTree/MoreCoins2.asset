@@ -20,4 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1a98fbd3d72c8de4096133eb21ad7894, type: 2}
   isUnlocked: 0
   SkillEffect: 2
-  effectValue: 0
+  effectValue: 100
